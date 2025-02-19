@@ -17,6 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // para obtener un valor con un solo decimal, correctamente redondeado
   // y asignarlo a un string, se puede usar:
   // double.parse(_value.toStringAsFixed(1));
+  double _valor=0.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {_resetear();},
                   icon: const Icon(Icons.refresh),
                   key: const Key('Refresh')),
             ],
@@ -39,11 +40,36 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[W1(), W2(), W3()],
+              children: <Widget>[
+                W1(valor: _valor, onAdd:_agregar_decimal,on_noAdd: _quitar_decimal,), 
+                W2(valor:_valor),
+                W3(valor: _valor, onAdd:_agregar_entero, on_noAdd: _quitar_entero)],
             ),
           ),
         ],
       )),
     );
+  }
+  void _agregar_decimal(){
+     _incrementar(0.1);
+  }
+  void _agregar_entero(){
+    _incrementar(1.0);
+  }
+  void _quitar_decimal(){
+     _incrementar(-0.1);
+  }
+  void _quitar_entero(){
+    _incrementar(-1.0);
+  }
+  void _incrementar(double incrementar){
+    setState(() {
+      _valor=  double.parse((_valor+incrementar).toStringAsFixed(1));
+    });
+  }
+  void _resetear(){
+    setState(() {
+      _valor=0.0;
+    });
   }
 }
